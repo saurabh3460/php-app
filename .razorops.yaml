@@ -25,23 +25,6 @@ tasks:
     steps:
     - workspace/attach
     - commands:
-      # - |
-      #   if [[ $CI_REPO_BRANCH == "prod" ]]; then
-      #             VALUES_FILE=values-prod.yaml
-      #             kubectl config use-context vodafoneproduction
-          
-      #     elif [[ $CI_REPO_BRANCH == "stage" ]]; then
-      #             VALUES_FILE=values-stage.yaml
-      #             kubectl config use-context clusterrazo
-
-      #     elif [[ $CI_REPO_BRANCH == "master" ]]; then
-      #             VALUES_FILE=values-stage.yaml
-      #             kubectl config use-context clusterrazo
-
-      #     else
-      #         echo "Unsupported release branch: $CI_REPO_BRANCH "
-      #         exit 1
-      #   fi
       - |
         helm dep up $HELM_CHART
         helm upgrade --install --reuse-values $APP_NAME $HELM_CHART \

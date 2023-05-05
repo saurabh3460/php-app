@@ -3,53 +3,49 @@ version: v2
 tasks:    
   build-image:
     variables:
-    - HELM_CHART=deploy/helm/maxam
+    - HELM_CHART=php-app/
     steps:
     - checkout
     - commands: 
       - helm lint $HELM_CHART
     - docker/build:
-        image: registry.digitalocean.com/maxamrazo/maxamrazo
-        tags: ["latest", "${CI_COMMIT_SHA:0:8}", "${CI_REPO_BRANCH}"]
-        push: true
-      if: branch == "main" 
+        image: saurabh3460/php-app
+        tags: ["latest", "${CI_COMMIT_SHA:0:8}"]
+        # push: true
     - workspace/persist:
-        paths: [deploy]
+        paths: [php-app]
 
   deploy:
     depends: [build-image]
     variables:
-    - APP_NAME=maxam
+    - APP_NAME=php-app
     - DOCKER_TAG=${CI_COMMIT_SHA:0:8}
-    - HELM_CHART=deploy/helm/maxam
-    - VALUES_FILE=values-stage.yaml
+    - HELM_CHART=php-app/
     - NS=app
-    - CLUSTER=clusterrazo
     steps:
     - workspace/attach
     - commands:
-      - |
-        if [[ $CI_REPO_BRANCH == "prod" ]]; then
-                  VALUES_FILE=values-prod.yaml
-                  kubectl config use-context vodafoneproduction
+      # - |
+      #   if [[ $CI_REPO_BRANCH == "prod" ]]; then
+      #             VALUES_FILE=values-prod.yaml
+      #             kubectl config use-context vodafoneproduction
           
-          elif [[ $CI_REPO_BRANCH == "stage" ]]; then
-                  VALUES_FILE=values-stage.yaml
-                  kubectl config use-context clusterrazo
+      #     elif [[ $CI_REPO_BRANCH == "stage" ]]; then
+      #             VALUES_FILE=values-stage.yaml
+      #             kubectl config use-context clusterrazo
 
-          elif [[ $CI_REPO_BRANCH == "master" ]]; then
-                  VALUES_FILE=values-stage.yaml
-                  kubectl config use-context clusterrazo
+      #     elif [[ $CI_REPO_BRANCH == "master" ]]; then
+      #             VALUES_FILE=values-stage.yaml
+      #             kubectl config use-context clusterrazo
 
-          else
-              echo "Unsupported release branch: $CI_REPO_BRANCH "
-              exit 1
-        fi
+      #     else
+      #         echo "Unsupported release branch: $CI_REPO_BRANCH "
+      #         exit 1
+      #   fi
       - |
         helm dep up $HELM_CHART
         helm upgrade --install --reuse-values $APP_NAME $HELM_CHART \
-          -f $HELM_CHART/$VALUES_FILE \
           --set image.tag=$DOCKER_TAG \
           --create-namespace -n $NS
 trigger:
-  when: branch in ("stage", "prod")
+  when: branch in ("main","stage", "prod")

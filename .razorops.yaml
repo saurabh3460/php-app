@@ -11,7 +11,7 @@ tasks:
     - docker/build:
         image: saurabh3460/php-app
         tags: ["latest", "${CI_COMMIT_SHA:0:8}"]
-        # push: true
+        push: true
     - workspace/persist:
         paths: [php-app]
 

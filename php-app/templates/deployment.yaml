@@ -57,6 +57,7 @@ spec:
           name: {{ .Chart.Name }}-nginx
           ports:
             - containerPort: 80
+              name: http
           volumeMounts:
             - name: shared-files
               mountPath: /var/www/html

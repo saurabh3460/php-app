@@ -28,7 +28,6 @@ tasks:
       - |
         helm dep up $HELM_CHART
         helm upgrade --install --reuse-values $APP_NAME $HELM_CHART \
-          --set image.tag=$DOCKER_TAG \
-          --create-namespace -n $NS
+          --set image.tag=$DOCKER_TAG 
 trigger:
   when: branch in ("main","stage", "prod")

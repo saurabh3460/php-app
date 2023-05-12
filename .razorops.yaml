@@ -9,7 +9,7 @@ tasks:
     - commands: 
       - helm lint $HELM_CHART
     - docker/build:
-        image: saurabh3460/php-app
+        image: registry.digitalocean.com/razorops/php-app
         tags: ["latest", "${CI_COMMIT_SHA:0:8}"]
         push: true
     - workspace/persist:
@@ -21,7 +21,6 @@ tasks:
     - APP_NAME=php-app
     - DOCKER_TAG=${CI_COMMIT_SHA:0:8}
     - HELM_CHART=php-app/
-    - NS=app
     steps:
     - workspace/attach
     - commands:

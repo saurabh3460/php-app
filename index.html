@@ -59,6 +59,12 @@
       <p>Thank you for visiting my page. This is an example of a beautiful page created using HTML and CSS.</p>
       <p>Here's a button you can click:</p>
       <a href="#" class="button">Click me!</a>
+
+        <p id="current-url"></p>
+        <script>
+          var currentUrl = window.location.href;
+          document.getElementById("current-url").innerHTML = "The current URL is: " + currentUrl;
+        </script>
     </div>
   </body>
 </html>

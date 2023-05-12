@@ -30,21 +30,21 @@ ingress:
   annotations: 
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
   hosts:
     - host: cloud-native.me
       paths:
         - path: /
           pathType: ImplementationSpecific
-    - host: cloud-native.me
-      paths:
-        - path: /hello(/|$)(.*)
-          pathType: ImplementationSpecific
-    - host: cloud-native.me
-      paths:
-        - path: (/|$)(.*)
-          pathType: ImplementationSpecific
+    # - host: cloud-native.me
+    #   paths:
+    #     - path: /hello(/|$)(.*)
+    #       pathType: ImplementationSpecific
+    # - host: cloud-native.me
+    #   paths:
+    #     - path: /hello.php
+    #       pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -64,3 +64,32 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+
+
+
+
+
+# With this http://cloud-native.me/hello.php won't work!!
+
+
+# ingress:
+#   enabled: true
+#   className: ""
+#   annotations: 
+#     kubernetes.io/ingress.class: nginx
+#     # kubernetes.io/tls-acme: "true"
+#     nginx.ingress.kubernetes.io/use-regex: "true"
+#     nginx.ingress.kubernetes.io/rewrite-target: /$2
+#   hosts:
+#     - host: cloud-native.me
+#       paths:
+#         - path: /(/|$)(.*)
+#           pathType: ImplementationSpecific
+
+
+# That's because with the current configuration, the Ingress is trying to match the path /hello.php with the regular expression (/|$)(.*), and rewrite it to /hello.php. However, since there is no endpoint or resource available at that path, it results in a 404 error.
+
+# When you remove the path field from the configuration, the Ingress simply forwards all requests to the root path /, which works since you have a resource available at that path.
+
+# If you want to use a regular expression to capture the path /hello.php and rewrite it to /, you can modify the path field to match it. Here's an example:

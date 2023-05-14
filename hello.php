@@ -53,7 +53,7 @@
   </head>
   <body>
     <header>
-      <h1>Welcome to My hello.php Page!</h1>
+      <h1>Welcome to My hello.php Page! kubernetes</h1>
     </header>
     <div class="container">
         <?php
@@ -61,7 +61,7 @@
         echo "The current URL is: " . $url;
         ?>
 
-        <?php echo "<p>Thank you for visiting my hello.php. This is an example of a hello.php page created using HTML, CSS and PHP.</p>
+        <?php echo "<p>Thank you for visiting my hello.php. from kubernetes This is an example of a hello.php page created using HTML, CSS and PHP.</p>
       <p>Here's a button you can click:</p>"; ?>
         <?php phpinfo(); ?>
       <a href="#" class="button">Click me!</a>

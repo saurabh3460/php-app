@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: registry.digitalocean.com/razorops/php-app
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "e49c0d7a013"
 
 imagePullSecrets: [{name: razorops}]
 nameOverride: ""
